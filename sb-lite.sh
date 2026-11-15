@@ -45,7 +45,7 @@
 # ============================================================================
 set -uo pipefail
 
-SB_LITE_VERSION="1.1.0"
+SB_LITE_VERSION="1.1.1"
 SB_VERSION="1.14.3"                       # 锁定的 sing-box 版本
 SB_SHA256="e2bdf179c15a3652955dc44867e33ca0965c9c9b91b34267dcc5a5d639a5feee"                 # sing-box 安装包 SHA256（实测值）
 CF_VERSION="2026.11.0"                    # 锁定的 cloudflared 版本
@@ -838,7 +838,14 @@ cmd_install() {
   start_nezha
 
   # 把脚本本体存一份，注册快捷命令
+  # 注意：bash <(curl ...) 安装时 $0 是管道，cp 出来是空文件（实测 0 字节），
+  # 必须校验，坏了就从仓库重新拉一份。
   cp "$0" "$SB_DIR/sb-lite.sh" 2>/dev/null || true
+  if [ ! -s "$SB_DIR/sb-lite.sh" ] || ! grep -q 'SB_LITE_VERSION=' "$SB_DIR/sb-lite.sh" 2>/dev/null; then
+    info "从仓库拉一份脚本本体存着"
+    curl -fL --retry 2 --connect-timeout 10 -o "$SB_DIR/sb-lite.sh" "$UPGRADE_URL" \
+      || warn "脚本本体没存下来，快捷命令不可用（节点不受影响）"
+  fi
   chmod 755 "$SB_DIR/sb-lite.sh" 2>/dev/null || true
   ln -sf "$SB_DIR/sb-lite.sh" /usr/local/bin/sb-lite 2>/dev/null || true
   install_guard_cron
