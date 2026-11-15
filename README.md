@@ -74,7 +74,6 @@ sb-lite version          # 版本
 | `CFIP` / `CFPORT` | 空 / 443 | Argo 节点优选 IP/端口（默认走隧道域名:443；设了优选就用优选 IP，host 字段写隧道域名当 SNI） |
 | `ARGO_DOMAIN` / `ARGO_AUTH` | 空 | 固定隧道：域名 + Token 或 JSON 凭证（不设=临时隧道） |
 | `NEZHA_SERVER` / `NEZHA_KEY` / `NEZHA_TLS` | 空 | 哪吒探针 v1（可选）：服务端 host:port、客户端密钥；TLS 留空按端口自动判断 |
-| `CHAT_ID` / `BOT_TOKEN` | 空 | Telegram 通知（可选）：装完把订阅地址发到指定聊天 |
 | `SB_LITE_BIN` / `SB_LITE_CF_BIN` / `NZ_BIN` | /usr/local/bin/sing-box / cloudflared / nezha-agent | 二进制路径 |
 
 ## Argo 隧道

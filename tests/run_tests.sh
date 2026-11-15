@@ -80,7 +80,6 @@ REALITY_SHORT_ID="aabbccdd"; VMESS_PATH="/vmess-1234abcd"
 SUB_TOKEN="00112233445566778899aabbccddeeff0011223344556677"; ARGO_DOMAIN=""
 ARGO_AUTH='{"AccountTag":"123","TunnelSecret":"abc","TunnelID":"tid-1"}'
 CFIP=""; CFPORT=""; NEZHA_SERVER=""; NEZHA_KEY=""; NEZHA_TLS=""
-CHAT_ID=""; BOT_TOKEN=""
 save_state
 # 换一组值再 load，看能不能原样回来（重点是 JSON 里的引号不能炸 source）
 ARGO_AUTH=""; UUID=""; SUB_TOKEN=""
@@ -126,7 +125,7 @@ fi
 echo "== 7. 非交互调用 =="
 check "--help 退出 0" "SB_LITE_NO_MAIN= bash '$SCRIPT' --help"
 check "菜单里按 0 退出" "printf '0\n' | SB_LITE_NO_MAIN= bash '$SCRIPT' menu"
-check "version 输出版本号" "SB_LITE_NO_MAIN= bash '$SCRIPT' version | grep -q 'sb-lite 1.1.1'"
+check "version 输出版本号" "SB_LITE_NO_MAIN= bash '$SCRIPT' version | grep -q 'sb-lite 1.1.2'"
 check "未知命令报错" "! SB_LITE_NO_MAIN= bash '$SCRIPT' nosuchcmd 2>/dev/null"
 
 echo "== 8. 升级地址 =="

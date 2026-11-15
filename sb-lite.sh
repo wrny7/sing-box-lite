@@ -41,11 +41,10 @@
 #   CFIP / CFPORT   # Argo 节点优选 IP/端口（默认走隧道域名:443）
 #   ARGO_DOMAIN / ARGO_AUTH  # 固定隧道：域名 + Token 或 JSON 凭证
 #   NEZHA_SERVER / NEZHA_KEY / NEZHA_TLS  # 哪吒探针（可选，不设就不装）
-#   CHAT_ID / BOT_TOKEN  # Telegram 通知（可选，不设就不发）
 # ============================================================================
 set -uo pipefail
 
-SB_LITE_VERSION="1.1.1"
+SB_LITE_VERSION="1.1.2"
 SB_VERSION="1.14.3"                       # 锁定的 sing-box 版本
 SB_SHA256="e2bdf179c15a3652955dc44867e33ca0965c9c9b91b34267dcc5a5d639a5feee"                 # sing-box 安装包 SHA256（实测值）
 CF_VERSION="2026.11.0"                    # 锁定的 cloudflared 版本
@@ -83,8 +82,6 @@ ARGO_AUTH="${ARGO_AUTH:-}"       # 固定隧道凭证：Token 或 JSON（不设=
 NEZHA_SERVER="${NEZHA_SERVER:-}" # 哪吒服务端 host:port（不设=不装探针）
 NEZHA_KEY="${NEZHA_KEY:-}"       # 哪吒客户端密钥
 NEZHA_TLS="${NEZHA_TLS:-}"       # 哪吒是否 TLS（留空按端口自动判断）
-CHAT_ID="${CHAT_ID:-}"           # Telegram 通知 chat id（不设=不发）
-BOT_TOKEN="${BOT_TOKEN:-}"       # Telegram 机器人 token
 
 # PORT 基数派生：只在对应 PORT_* 还是默认值时才派生，单独设过的优先。
 if [ -n "$PORT" ]; then
@@ -278,8 +275,6 @@ CFPORT=$CFPORT
 NEZHA_SERVER=$NEZHA_SERVER
 NEZHA_KEY=$NEZHA_KEY
 NEZHA_TLS=$NEZHA_TLS
-CHAT_ID=$CHAT_ID
-BOT_TOKEN=$BOT_TOKEN
 EOF
   # ARGO_AUTH 可能是 JSON（含引号/空格），必须 shell 转义后存，否则 source 会炸
   printf 'ARGO_AUTH=%q\n' "$ARGO_AUTH" >> "$STATE_FILE"
@@ -721,18 +716,6 @@ stop_nezha() {
   fi
 }
 
-# ---------------- Telegram 通知（可选，A 的功能） ----------------
-# 只在 CHAT_ID 和 BOT_TOKEN 都给了时才发；发失败也不影响安装。
-tg_notify() {
-  [ -n "$CHAT_ID" ] && [ -n "$BOT_TOKEN" ] || return 0
-  local text
-  text=$(printf 'sb-lite 装好了\n订阅：%s\n节点：%s 条（VLESS/VMess/HY2/TUIC/AnyTLS）' \
-    "$(sub_url)" "$(wc -l < "$SB_DIR/nodes.txt" 2>/dev/null || echo 0)")
-  curl -fsS -m 10 "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
-    --data-urlencode "chat_id=$CHAT_ID" --data-urlencode "text=$text" \
-    >/dev/null 2>&1 && info "Telegram 通知已发" || warn "Telegram 通知没发出去（节点不受影响）"
-}
-
 # ---------------- systemd 服务 ----------------
 write_systemd() {
   cat > /etc/systemd/system/sb-lite.service <<EOF
@@ -856,7 +839,6 @@ cmd_install() {
   echo
   info "订阅地址：$(sub_url)"
   info "管理命令：sb-lite status / update / regen / uninstall"
-  tg_notify
 }
 
 cmd_status() {
