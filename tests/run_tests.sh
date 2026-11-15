@@ -125,7 +125,7 @@ fi
 echo "== 7. 非交互调用 =="
 check "--help 退出 0" "SB_LITE_NO_MAIN= bash '$SCRIPT' --help"
 check "菜单里按 0 退出" "printf '0\n' | SB_LITE_NO_MAIN= bash '$SCRIPT' menu"
-check "version 输出版本号" "SB_LITE_NO_MAIN= bash '$SCRIPT' version | grep -q 'sb-lite 1.1.2'"
+check "version 输出版本号" "SB_LITE_NO_MAIN= bash '$SCRIPT' version | grep -q 'sb-lite 1.1.3'"
 check "未知命令报错" "! SB_LITE_NO_MAIN= bash '$SCRIPT' nosuchcmd 2>/dev/null"
 
 echo "== 8. 升级地址 =="

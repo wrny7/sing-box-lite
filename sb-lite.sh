@@ -44,7 +44,7 @@
 # ============================================================================
 set -uo pipefail
 
-SB_LITE_VERSION="1.1.2"
+SB_LITE_VERSION="1.1.3"
 SB_VERSION="1.14.3"                       # 锁定的 sing-box 版本
 SB_SHA256="e2bdf179c15a3652955dc44867e33ca0965c9c9b91b34267dcc5a5d639a5feee"                 # sing-box 安装包 SHA256（实测值）
 CF_VERSION="2026.11.0"                    # 锁定的 cloudflared 版本
@@ -52,7 +52,7 @@ CF_SHA256="51f7c68b57ed7269164075d7e789efce5b59355982f06392deeb037d982a51fd"    
 NZ_VERSION="v2.4.0"                       # 锁定的哪吒 agent 版本（可选功能）
 NZ_SHA256_AMD64="0071f57e4dd42bd91adfdfb84291a1ebbc8b45c67f3511987e5982bea5eade7f"
 NZ_SHA256_ARM64="c9e0a4e0dfa64b6f4759c80502607aab77274711a350cb208011f21df1b52a79"
-UPGRADE_URL="https://raw.githubusercontent.com/wrny7/sing-box-lite/%E4%B8%BB%E8%A6%81%E7%9A%84/sb-lite.sh"
+UPGRADE_URL="https://raw.githubusercontent.com/wrny7/sing-box-lite/main/sb-lite.sh"
 
 SB_DIR="${SB_LITE_DIR:-/etc/sb-lite}"
 SB_BIN="${SB_LITE_BIN:-/usr/local/bin/sing-box}"

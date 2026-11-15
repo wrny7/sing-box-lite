@@ -31,10 +31,8 @@
 ```bash
 # 新系统没有 curl 时先装上（B 的做法），其余依赖由脚本内部补装
 command -v curl >/dev/null 2>&1 || { if command -v apt-get >/dev/null 2>&1; then apt-get update -y && apt-get install -y curl; elif command -v dnf >/dev/null 2>&1; then dnf install -y curl; elif command -v yum >/dev/null 2>&1; then yum install -y curl; elif command -v apk >/dev/null 2>&1; then apk add --no-cache curl; fi; }
-bash <(curl -Ls https://raw.githubusercontent.com/wrny7/sing-box-lite/%E4%B8%BB%E8%A6%81%E7%9A%84/sb-lite.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/wrny7/sing-box-lite/main/sb-lite.sh)
 ```
-
-> 注意：当前默认分支叫 `主要的`（建仓页面是中文，分支名被本地化了），所以上面链接里是 URL 编码后的分支名。等真实测试通过后改成 `main`，链接就换回 `/main/`。
 
 装完打印五条节点链接和订阅地址，只显示这一次，自己存好。
 
